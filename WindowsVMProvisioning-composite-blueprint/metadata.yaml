@@ -1,0 +1,7 @@
+name: "auto-generated-pkg-060ee9ef-2c68-43b7-8999-5d34d3abab5f"
+productVersion: "7.6.0-SNAPSHOT"
+data:
+- locator: "composite-blueprint/WindowsVMProvisioning.yaml"
+  name: "Windows VM Provisioning"
+  description: "Windows VM Provisioning"
+exportTime: "2019-08-13T23:40:43.983Z"

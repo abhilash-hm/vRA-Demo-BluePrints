@@ -1,0 +1,7 @@
+name: "auto-generated-pkg-db41bcf8-2b53-4a3b-bb9f-ad3aedd736c2"
+productVersion: "7.6.0-SNAPSHOT"
+data:
+- locator: "composite-blueprint/RHELVMProvisioning.yaml"
+  name: "RHEL VM Provisioning"
+  description: "RHEL VM Provisioning"
+exportTime: "2019-08-13T23:53:24.121Z"

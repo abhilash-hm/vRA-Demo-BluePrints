@@ -1,0 +1,248 @@
+id: WordpressMultiTierWindows
+name: Wordpress Multi-Tier - Windows
+description: Multi-tier application provisioning to install Wordpress
+status: PUBLISHED
+properties:
+  _debug_deployment:
+    default: 'true'
+    required: false
+    secured: false
+    visible: false
+  _number_of_instances:
+    max: 1
+components:
+  Action.mysql.createdb_1:
+    type: Software.Actionmysqlcreatedb
+    dependsOn:
+    - Software.db.mysql_2
+    data:
+      dbName:
+        default: ''
+        required: true
+        visible: true
+      dbUserPassword:
+        default: ${Software.db.mysql_2~dpRootPassword}
+        required: true
+        secured: false
+        visible: false
+      host:
+        fixed: ${_resource~WP_Database}
+  Action.wpress.setdatabase_1:
+    type: Software.Actionwpresssetdatabase
+    dependsOn:
+    - Software.web.wpress_1
+    - Action.mysql.createdb_1
+    data:
+      dbIP:
+        default: ${_resource~WP_Database~ip_address}
+        required: true
+      dbName:
+        default: ${Action.mysql.createdb_1~dbName}
+        required: true
+      dbPassword:
+        default: ${Action.mysql.createdb_1~dbUserPassword}
+        required: true
+        secured: false
+      dbPort:
+        default: ${Software.db.mysql_2~dpPort}
+        required: true
+      host:
+        fixed: ${_resource~WP_Web_App}
+  Software.db.mysql_2:
+    type: Software.Softwaredbmysql
+    data:
+      dpPort:
+        fixed: '3306'
+        required: true
+      dpRootPassword:
+        default: ''
+        required: true
+        secured: false
+        visible: true
+      host:
+        fixed: ${_resource~WP_Database}
+      installerPath:
+        default: https://vra7cafe.virtualiseme.com.au/artifactory/binrepo/mariadb-10.1.16-winx64.msi
+        required: true
+  Software.util.7zip_1:
+    type: Software.Softwareutil7zip
+    data:
+      host:
+        fixed: ${_resource~WP_Web_App}
+      installerPath:
+        default: https://vra7cafe.virtualiseme.com.au/artifactory/binrepo/7z1602-x64.exe
+        required: true
+  Software.web.wpress_1:
+    type: Software.Softwarewebwpress
+    dependsOn:
+    - Software.web.xampp.start_1
+    data:
+      host:
+        fixed: ${_resource~WP_Web_App}
+      installerPath:
+        default: https://wordpress.org/latest.zip
+        required: true
+  Software.web.xampp.config_1:
+    type: Software.Softwarewebxamppconf
+    dependsOn:
+    - Software.web.xampp.install_1
+    data:
+      host:
+        fixed: ${_resource~WP_Web_App}
+  Software.web.xampp.install_1:
+    type: Software.Softwarewebxampp
+    dependsOn:
+    - Software.util.7zip_1
+    data:
+      host:
+        fixed: ${_resource~WP_Web_App}
+  Software.web.xampp.start_1:
+    type: Software.Softwarewebxamppstart
+    dependsOn:
+    - Software.web.xampp.config_1
+    data:
+      host:
+        fixed: ${_resource~WP_Web_App}
+  WP_Database:
+    type: Infrastructure.CatalogItem.Machine.Virtual.vSphere
+    data:
+      _cluster:
+        default: 1
+        max: 1
+        min: 1
+      action:
+        fixed: FullClone
+      allow_storage_policies:
+        fixed: false
+      blueprint_type:
+        fixed: '1'
+      cpu:
+        default: 2
+        max: 4
+        min: 2
+      description: Wordpress Database
+      disks:
+      - capacity: 40
+        custom_properties: null
+        id: 1565060794972
+        initial_location: ''
+        is_clone: true
+        label: Hard disk 1
+        storage_reservation_policy: ''
+        userCreated: false
+        volumeId: 0
+      guest_customization_specification: Windows VM Customization
+      max_network_adapters: {}
+      max_volumes: {}
+      memory:
+        default: 4096
+        max: 8192
+        min: 4096
+      nics:
+      - address: ''
+        assignment_type: Static
+        id: 0
+        load_balancing: ''
+        network: ${_resource~vRAVMNP}
+        network_profile: vRA-VM-NP
+      provisioning_workflow:
+        fixed:
+          id: CloneWorkflow
+          label: CloneWorkflow
+      reservation_policy:
+        id: ResP-EndUser
+        label: ResP-EndUser
+      security_groups: []
+      security_tags: []
+      source_machine:
+        fixed:
+          id: 8efc6764-3054-42bd-aeb0-8191d2b93605
+          label: Windows 2016 Template
+      source_machine_name:
+        fixed: Windows 2016 Template
+      storage:
+        default: 40
+        max: 200
+        min: 40
+  WP_Web_App:
+    type: Infrastructure.CatalogItem.Machine.Virtual.vSphere
+    data:
+      _cluster:
+        default: 1
+        max: 1
+        min: 1
+      action:
+        fixed: FullClone
+      allow_storage_policies:
+        fixed: false
+      blueprint_type:
+        fixed: '1'
+      cpu:
+        default: 2
+        max: 4
+        min: 2
+      description: Web app to host Wordpress
+      disks:
+      - capacity: 40
+        custom_properties: null
+        id: 1565060765705
+        initial_location: ''
+        is_clone: true
+        label: Hard disk 1
+        storage_reservation_policy: ''
+        userCreated: false
+        volumeId: 0
+      display_location:
+        fixed: false
+      guest_customization_specification: Windows VM Customization
+      max_network_adapters: {}
+      max_volumes: {}
+      memory:
+        default: 4096
+        max: 8192
+        min: 4096
+      nics:
+      - address: ''
+        assignment_type: Static
+        id: 0
+        load_balancing: ''
+        network: ${_resource~vRAVMNP}
+        network_profile: vRA-VM-NP
+      provisioning_workflow:
+        fixed:
+          id: CloneWorkflow
+          label: CloneWorkflow
+      reservation_policy:
+        id: ResP-EndUser
+        label: ResP-EndUser
+      security_groups: []
+      security_tags: []
+      source_machine:
+        fixed:
+          id: 8efc6764-3054-42bd-aeb0-8191d2b93605
+          label: Windows 2016 Template
+      source_machine_name:
+        fixed: Windows 2016 Template
+      storage:
+        default: 40
+        max: 200
+        min: 40
+  vRAVMNP:
+    type: Infrastructure.Network.Network.Existing
+    data:
+      name:
+        fixed: vRAVMNP
+      network_profile:
+        fixed: vRA-VM-NP
+layout:
+  Action.mysql.createdb_1: 1,0
+  Action.wpress.setdatabase_1: 5,0
+  Software.db.mysql_2: 0,0
+  Software.util.7zip_1: 0,0
+  Software.web.wpress_1: 4,0
+  Software.web.xampp.config_1: 2,0
+  Software.web.xampp.install_1: 1,0
+  Software.web.xampp.start_1: 3,0
+  WP_Database: 0,1
+  WP_Web_App: 0,0
+  vRAVMNP: 1,0

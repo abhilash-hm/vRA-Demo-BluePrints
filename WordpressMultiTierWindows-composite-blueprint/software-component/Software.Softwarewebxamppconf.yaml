@@ -1,0 +1,59 @@
+'@type': "SoftwareComponentType"
+id: "Software.Softwarewebxamppconf"
+name: "Software.web.xampp.config"
+description: "Configure Xampp"
+publishStatus: "PUBLISHED"
+createdDate: "2019-07-12T21:29:16.492Z"
+lastUpdated: "2019-07-12T21:33:40.598Z"
+publishStatusName: "Published"
+schema:
+  fields:
+  - id: "host"
+    label: "Container"
+    description: ""
+    dataType:
+      type: "ref"
+      componentTypeId: "com.vmware.csp.iaas.blueprint.service"
+      classId: "Infrastructure.Machine.Schema"
+      label: "Machine"
+    state:
+      dependencies: []
+      facets:
+      - type: "visible"
+        value:
+          type: "constantClause"
+          value:
+            type: "boolean"
+            value: false
+      - type: "mandatory"
+        value:
+          type: "constant"
+          value:
+            type: "boolean"
+            value: true
+      - type: "internal"
+        value:
+          type: "constantClause"
+          value:
+            type: "boolean"
+            value: true
+    isMultiValued: false
+containerFieldId: "host"
+lifecycleTasks:
+- createdDate: "2019-07-12T21:29:16.492Z"
+  lastUpdated: "2019-07-30T00:50:16.518Z"
+  script:
+    scriptContent: "(Get-Content c:\\xampp\\apache\\conf\\httpd.conf).replace('Listen\
+      \ 80', \"Listen 8080\") | Set-Content c:\\xampp\\apache\\conf\\httpd.conf\n\
+      (Get-Content c:\\xampp\\apache\\conf\\httpd.conf).replace('ServerName localhost:80',\
+      \ \"ServerName localhost:8080\") | Set-Content c:\\xampp\\apache\\conf\\httpd.conf\n\
+      \n(Get-Content c:\\xampp\\apache\\conf\\extra\\httpd-ssl.conf).replace('Listen\
+      \ 443', \"Listen 4433\") | Set-Content c:\\xampp\\apache\\conf\\extra\\httpd-ssl.conf\n\
+      (Get-Content c:\\xampp\\apache\\conf\\extra\\httpd-ssl.conf).replace('ServerName\
+      \ www.example.com:443', \"ServerName localhost:4433\") | Set-Content c:\\xampp\\\
+      apache\\conf\\extra\\httpd-ssl.conf"
+    isRebootAfter: false
+    scriptTypeId: "powershell"
+  taskDescriptorRef:
+    id: "INSTALL"
+    label: "Install"

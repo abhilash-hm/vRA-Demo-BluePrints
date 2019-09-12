@@ -1,0 +1,152 @@
+'@type': "SoftwareComponentType"
+id: "Software.Actionwpresssetdatabase"
+name: "Software.WP.setdatabase"
+description: "Setting DB to Wordpress"
+publishStatus: "PUBLISHED"
+createdDate: "2019-07-08T23:35:39.623Z"
+lastUpdated: "2019-07-08T23:38:39.526Z"
+publishStatusName: "Published"
+schema:
+  fields:
+  - id: "dbPort"
+    label: "dbPort"
+    description: "Database port"
+    dataType:
+      type: "primitive"
+      typeId: "STRING"
+    state:
+      dependencies: []
+      facets:
+      - type: "mandatory"
+        value:
+          type: "constant"
+          value:
+            type: "boolean"
+            value: true
+      - type: "defaultValue"
+        value:
+          type: "constant"
+          value:
+            type: "string"
+            value: ""
+    isMultiValued: false
+  - id: "dbName"
+    label: "dbName"
+    description: "Database Name"
+    dataType:
+      type: "primitive"
+      typeId: "STRING"
+    state:
+      dependencies: []
+      facets:
+      - type: "mandatory"
+        value:
+          type: "constant"
+          value:
+            type: "boolean"
+            value: true
+      - type: "defaultValue"
+        value:
+          type: "constant"
+          value:
+            type: "string"
+            value: ""
+    isMultiValued: false
+  - id: "host"
+    label: "Container"
+    description: ""
+    dataType:
+      type: "ref"
+      componentTypeId: "com.vmware.csp.iaas.blueprint.service"
+      classId: "Infrastructure.Machine.Schema"
+      label: "Machine"
+    state:
+      dependencies: []
+      facets:
+      - type: "visible"
+        value:
+          type: "constantClause"
+          value:
+            type: "boolean"
+            value: false
+      - type: "mandatory"
+        value:
+          type: "constant"
+          value:
+            type: "boolean"
+            value: true
+      - type: "internal"
+        value:
+          type: "constantClause"
+          value:
+            type: "boolean"
+            value: true
+    isMultiValued: false
+  - id: "dbIP"
+    label: "dbIP"
+    description: "Database IP Address"
+    dataType:
+      type: "primitive"
+      typeId: "STRING"
+    state:
+      dependencies: []
+      facets:
+      - type: "mandatory"
+        value:
+          type: "constant"
+          value:
+            type: "boolean"
+            value: true
+      - type: "defaultValue"
+        value:
+          type: "constant"
+          value:
+            type: "string"
+            value: ""
+    isMultiValued: false
+  - id: "dbPassword"
+    label: "dbPassword"
+    description: "Database Password"
+    dataType:
+      type: "primitive"
+      typeId: "STRING"
+    state:
+      dependencies: []
+      facets:
+      - type: "encrypted"
+        value:
+          type: "constant"
+          value:
+            type: "boolean"
+            value: false
+      - type: "mandatory"
+        value:
+          type: "constant"
+          value:
+            type: "boolean"
+            value: true
+      - type: "defaultValue"
+        value:
+          type: "constant"
+          value:
+            type: "string"
+            value: ""
+    isMultiValued: false
+containerFieldId: "host"
+lifecycleTasks:
+- createdDate: "2019-07-08T23:35:39.624Z"
+  lastUpdated: "2019-07-17T00:15:41.407Z"
+  script:
+    scriptContent: "(Get-Content c:\\xampp\\htdocs\\wordpress\\wp-config-sample.php).replace('database_name_here',\
+      \ \"$dbName\") | Set-Content c:\\xampp\\htdocs\\wordpress\\wp-config.php\n(Get-Content\
+      \ c:\\xampp\\htdocs\\wordpress\\wp-config.php).replace('username_here', \"root\"\
+      ) | Set-Content c:\\xampp\\htdocs\\wordpress\\wp-config.php\n(Get-Content c:\\\
+      xampp\\htdocs\\wordpress\\wp-config.php).replace('password_here', \"$dbPassword\"\
+      ) | Set-Content c:\\xampp\\htdocs\\wordpress\\wp-config.php\n(Get-Content c:\\\
+      xampp\\htdocs\\wordpress\\wp-config.php).replace('localhost', \"$dbIP\") | Set-Content\
+      \ c:\\xampp\\htdocs\\wordpress\\wp-config.php"
+    isRebootAfter: false
+    scriptTypeId: "powershell"
+  taskDescriptorRef:
+    id: "INSTALL"
+    label: "Install"

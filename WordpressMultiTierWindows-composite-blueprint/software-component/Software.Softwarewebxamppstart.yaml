@@ -1,0 +1,54 @@
+'@type': "SoftwareComponentType"
+id: "Software.Softwarewebxamppstart"
+name: "Software.web.xampp.start"
+description: "Start Xampp"
+publishStatus: "PUBLISHED"
+createdDate: "2019-07-12T21:30:33.877Z"
+lastUpdated: "2019-07-12T21:33:51.787Z"
+publishStatusName: "Published"
+schema:
+  fields:
+  - id: "host"
+    label: "Container"
+    description: ""
+    dataType:
+      type: "ref"
+      componentTypeId: "com.vmware.csp.iaas.blueprint.service"
+      classId: "Infrastructure.Machine.Schema"
+      label: "Machine"
+    state:
+      dependencies: []
+      facets:
+      - type: "visible"
+        value:
+          type: "constantClause"
+          value:
+            type: "boolean"
+            value: false
+      - type: "mandatory"
+        value:
+          type: "constant"
+          value:
+            type: "boolean"
+            value: true
+      - type: "internal"
+        value:
+          type: "constantClause"
+          value:
+            type: "boolean"
+            value: true
+    isMultiValued: false
+containerFieldId: "host"
+lifecycleTasks:
+- createdDate: "2019-07-12T21:30:33.878Z"
+  lastUpdated: "2019-07-16T22:48:51.997Z"
+  script:
+    scriptContent: "$ErrorActionPreference = 'SilentlyContinue'\n\ntry {\ncd c:\\\
+      xampp\\apache\\bin\n\n.\\httpd.exe -k install -n \"Apache\"\n\nnet start Apache\n\
+      \n$error.clear()\n\n} catch {\n\nexit 0\n$LASTEXITCODE = 0\n$error.clear()\n\
+      \n}"
+    isRebootAfter: false
+    scriptTypeId: "powershell"
+  taskDescriptorRef:
+    id: "INSTALL"
+    label: "Install"

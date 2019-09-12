@@ -1,0 +1,79 @@
+id: WindowsVMProvisioning
+name: Windows VM Provisioning
+description: Windows 2016 VM provisioning Blueprint
+status: PUBLISHED
+properties:
+  _number_of_instances:
+    max: 1
+components:
+  vRAVMNP:
+    type: Infrastructure.Network.Network.Existing
+    data:
+      name:
+        fixed: vRAVMNP
+      network_profile:
+        fixed: vRA-VM-NP
+  vSphere__vCenter__Machine_1:
+    type: Infrastructure.CatalogItem.Machine.Virtual.vSphere
+    data:
+      _cluster:
+        default: 1
+        max: 4
+        min: 1
+      action:
+        fixed: FullClone
+      allow_storage_policies:
+        fixed: false
+      blueprint_type:
+        fixed: '1'
+      cpu:
+        default: 2
+        max: 4
+        min: 2
+      description: Windows 2016 VM from template
+      disks:
+      - capacity: 40
+        custom_properties: null
+        id: 1564446425189
+        initial_location: ''
+        is_clone: true
+        label: Hard disk 1
+        storage_reservation_policy: ''
+        userCreated: false
+        volumeId: 0
+      guest_customization_specification: Windows VM Customization
+      max_network_adapters: {}
+      max_volumes: {}
+      memory:
+        default: 4096
+        max: 8192
+        min: 4096
+      nics:
+      - address: ''
+        assignment_type: Static
+        id: 0
+        load_balancing: ''
+        network: ${_resource~vRAVMNP}
+        network_profile: vRA-VM-NP
+      provisioning_workflow:
+        fixed:
+          id: CloneWorkflow
+          label: CloneWorkflow
+      reservation_policy:
+        id: ResP-EndUser
+        label: ResP-EndUser
+      security_groups: []
+      security_tags: []
+      source_machine:
+        fixed:
+          id: 8efc6764-3054-42bd-aeb0-8191d2b93605
+          label: Windows 2016 Template
+      source_machine_name:
+        fixed: Windows 2016 Template
+      storage:
+        default: 40
+        max: 200
+        min: 40
+layout:
+  vRAVMNP: 1,0
+  vSphere__vCenter__Machine_1: 0,0

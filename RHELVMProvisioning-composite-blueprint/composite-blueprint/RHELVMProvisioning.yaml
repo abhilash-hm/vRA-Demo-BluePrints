@@ -1,0 +1,79 @@
+id: RHELVMProvisioning
+name: RHEL VM Provisioning
+description: RHEL 7 VM provisioning Blueprint
+status: PUBLISHED
+properties:
+  _number_of_instances:
+    max: 4
+components:
+  vRAVMNP:
+    type: Infrastructure.Network.Network.Existing
+    data:
+      name:
+        fixed: vRAVMNP
+      network_profile:
+        fixed: vRA-VM-NP
+  vSphere__vCenter__Machine_1:
+    type: Infrastructure.CatalogItem.Machine.Virtual.vSphere
+    data:
+      _cluster:
+        default: 1
+        max: 4
+        min: 1
+      action:
+        fixed: FullClone
+      allow_storage_policies:
+        fixed: false
+      blueprint_type:
+        fixed: '1'
+      cpu:
+        default: 2
+        max: 8
+        min: 2
+      description: RHEL 7 VM from template
+      disks:
+      - capacity: 16
+        custom_properties: null
+        id: 1564530969318
+        initial_location: ''
+        is_clone: true
+        label: Hard disk 1
+        storage_reservation_policy: ''
+        userCreated: false
+        volumeId: 0
+      guest_customization_specification: Linux VM Customization
+      max_network_adapters: {}
+      max_volumes: {}
+      memory:
+        default: 2048
+        max: 16384
+        min: 2048
+      nics:
+      - address: ''
+        assignment_type: Static
+        id: 0
+        load_balancing: ''
+        network: ${_resource~vRAVMNP}
+        network_profile: vRA-VM-NP
+      provisioning_workflow:
+        fixed:
+          id: CloneWorkflow
+          label: CloneWorkflow
+      reservation_policy:
+        id: ResP-EndUser
+        label: ResP-EndUser
+      security_groups: []
+      security_tags: []
+      source_machine:
+        fixed:
+          id: a62c48bf-a6a0-4e24-93cd-8120d51d54e9
+          label: RHEL 7 Template
+      source_machine_name:
+        fixed: RHEL 7 Template
+      storage:
+        default: 16
+        max: 200
+        min: 16
+layout:
+  vRAVMNP: 1,0
+  vSphere__vCenter__Machine_1: 0,0
